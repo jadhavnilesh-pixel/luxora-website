@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXORA | Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-dim: #7a6030;
+      --black: #050505;
+      --dark: #0d0d0d;
+      --dark2: #141414;
+      --white: #f5f0e8;
+      --gray: #888880;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--black); color:var(--white); font-family:'Montserrat',sans-serif; font-weight:300; overflow-x:hidden; cursor:none; }
+
+    .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+    .cursor-ring { position:fixed; width:36px; height:36px; border:1px solid var(--gold); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.15s ease; opacity:0.6; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:1000; opacity:0.35; }
+
+    nav { position:fixed; top:0; left:0; right:0; z-index:500; display:flex; justify-content:space-between; align-items:center; padding:28px 60px; background:linear-gradient(to bottom,rgba(5,5,5,0.95),transparent); }
+    .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.25em; color:var(--gold); text-decoration:none; }
+    .nav-links { display:flex; gap:48px; list-style:none; }
+    .nav-links a { font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--white); text-decoration:none; opacity:0.7; transition:opacity 0.3s,color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { opacity:1; color:var(--gold); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+    /* PAGE HERO */
+    .page-hero { padding:160px 60px 80px; background:linear-gradient(160deg,#0d0a04 0%,var(--black) 60%); position:relative; overflow:hidden; }
+    .page-hero::before { content:'TALK'; position:absolute; right:-10px; top:50%; transform:translateY(-50%); font-family:'Bebas Neue',sans-serif; font-size:20rem; color:rgba(201,168,76,0.03); line-height:1; pointer-events:none; }
+    .page-hero-label { font-size:0.6rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; opacity:0; animation:fadeUp 0.8s ease forwards 0.2s; }
+    .page-hero-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(4rem,12vw,9rem); letter-spacing:0.05em; line-height:0.9; opacity:0; animation:fadeUp 0.8s ease forwards 0.4s; }
+    .page-hero-title em { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gold); }
+    .page-hero-sub { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gray); font-size:1.1rem; margin-top:20px; opacity:0; animation:fadeUp 0.8s ease forwards 0.6s; }
+
+    /* MAIN GRID */
+    .contact-wrap { padding:80px 60px; display:grid; grid-template-columns:1fr 1.6fr; gap:80px; align-items:start; }
+
+    /* LEFT INFO */
+    .contact-info {}
+    .section-label { font-size:0.6rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:block; }
+    .info-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:300; margin-bottom:24px; line-height:1.2; }
+    .info-text { font-size:0.75rem; color:var(--gray); line-height:1.9; margin-bottom:48px; }
+
+    .contact-item { display:flex; gap:20px; align-items:flex-start; margin-bottom:32px; padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .contact-item:last-of-type { border-bottom:none; }
+    .contact-icon { width:44px; height:44px; border:1px solid rgba(201,168,76,0.3); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .contact-item-label { font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:4px; }
+    .contact-item-value { font-size:0.8rem; color:var(--white); line-height:1.6; }
+    .contact-item-value a { color:var(--white); text-decoration:none; transition:color 0.3s; }
+    .contact-item-value a:hover { color:var(--gold); }
+
+    /* SOCIAL */
+    .social-wrap { margin-top:48px; }
+    .social-label { font-size:0.55rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:16px; display:block; }
+    .social-links { display:flex; gap:12px; }
+    .social-btn { width:44px; height:44px; border:1px solid rgba(201,168,76,0.2); display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:1rem; color:var(--gray); transition:all 0.3s; }
+    .social-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(201,168,76,0.05); }
+
+    /* RIGHT FORMS */
+    .forms-wrap {}
+
+    /* Tab switch */
+    .form-tabs { display:flex; gap:4px; margin-bottom:40px; }
+    .form-tab { font-family:'Montserrat',sans-serif; font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; padding:12px 24px; border:1px solid rgba(201,168,76,0.2); background:transparent; color:var(--gray); cursor:pointer; transition:all 0.3s; }
+    .form-tab:hover { color:var(--white); border-color:var(--gold); }
+    .form-tab.active { background:var(--gold); color:var(--black); border-color:var(--gold); }
+
+    .form-panel { display:none; }
+    .form-panel.active { display:block; }
+
+    /* Form styles */
+    .luxury-form { background:var(--dark2); padding:48px; }
+    .form-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; margin-bottom:8px; }
+    .form-subtitle { font-size:0.7rem; color:var(--gray); margin-bottom:36px; line-height:1.7; }
+
+    .form-group { margin-bottom:24px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-label { font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold-dim); display:block; margin-bottom:10px; }
+    .form-input, .form-select, .form-textarea {
+      width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+      color:var(--white); font-family:'Montserrat',sans-serif; font-size:0.8rem; font-weight:300;
+      padding:14px 18px; outline:none; transition:border-color 0.3s, background 0.3s;
+      -webkit-appearance:none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--gold); background:rgba(201,168,76,0.03); }
+    .form-input::placeholder, .form-textarea::placeholder { color:rgba(136,136,128,0.5); }
+    .form-select { cursor:pointer; }
+    .form-select option { background:var(--dark2); color:var(--white); }
+    .form-textarea { resize:vertical; min-height:120px; }
+
+    .form-submit { width:100%; font-family:'Montserrat',sans-serif; font-size:0.65rem; font-weight:500; letter-spacing:0.35em; text-transform:uppercase; padding:18px; background:var(--gold); color:var(--black); border:none; cursor:pointer; transition:all 0.3s; margin-top:8px; position:relative; overflow:hidden; }
+    .form-submit::before { content:''; position:absolute; inset:0; background:var(--white); transform:translateX(-100%); transition:transform 0.4s; }
+    .form-submit:hover::before { transform:translateX(0); }
+    .form-submit span { position:relative; z-index:1; }
+
+    /* Success message */
+    .form-success { display:none; text-align:center; padding:60px 40px; }
+    .success-icon { font-size:3rem; margin-bottom:20px; }
+    .success-title { font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--gold); margin-bottom:12px; }
+    .success-text { font-size:0.75rem; color:var(--gray); line-height:1.8; }
+
+    /* FAQ strip */
+    .faq-strip { padding:0 60px 80px; }
+    .faq-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,3vw,2.2rem); font-weight:300; margin-bottom:32px; }
+    .faq-item { border-bottom:1px solid rgba(255,255,255,0.05); }
+    .faq-q { width:100%; background:none; border:none; color:var(--white); font-family:'Montserrat',sans-serif; font-size:0.8rem; font-weight:300; letter-spacing:0.05em; text-align:left; padding:20px 0; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:color 0.3s; }
+    .faq-q:hover { color:var(--gold); }
+    .faq-arrow { font-size:1rem; color:var(--gold); transition:transform 0.3s; }
+    .faq-a { font-size:0.72rem; color:var(--gray); line-height:1.8; max-height:0; overflow:hidden; transition:max-height 0.4s ease, padding 0.3s; }
+    .faq-item.open .faq-a { max-height:200px; padding-bottom:20px; }
+    .faq-item.open .faq-arrow { transform:rotate(45deg); }
+
+    footer { background:var(--black); padding:60px; border-top:1px solid rgba(201,168,76,0.1); display:flex; justify-content:space-between; align-items:center; }
+    .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.2em; color:var(--gold); }
+    .footer-links-row { display:flex; gap:40px; }
+    .footer-links-row a { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray); text-decoration:none; transition:color 0.3s; }
+    .footer-links-row a:hover { color:var(--gold); }
+    .footer-copy { font-size:0.6rem; color:rgba(136,136,128,0.4); letter-spacing:0.1em; }
+
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media(max-width:768px){
+      nav{padding:24px;}
+      .nav-links{gap:20px;}
+      .page-hero{padding:120px 24px 60px;}
+      .contact-wrap{grid-template-columns:1fr; gap:40px; padding:60px 24px;}
+      .faq-strip{padding:0 24px 60px;}
+      .luxury-form{padding:32px 24px;}
+      .form-row{grid-template-columns:1fr;}
+      footer{flex-direction:column; gap:20px; padding:40px 24px; text-align:center;}
+      .footer-links-row{flex-wrap:wrap; justify-content:center;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LUXORA</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <span class="page-hero-label">Get In Touch</span>
+  <h1 class="page-hero-title">LET'S<br><em>Create</em></h1>
+  <p class="page-hero-sub">Tell us your vision — we'll bring it to life.</p>
+</div>
+
+<!-- MAIN CONTACT GRID -->
+<div class="contact-wrap">
+
+  <!-- LEFT -->
+  <div class="contact-info reveal">
+    <span class="section-label">Reach Us</span>
+    <h2 class="info-title">We'd Love to<br>Hear From You</h2>
+    <p class="info-text">Whether you have a specific idea in mind or just want to explore what's possible — drop us a message. Our team responds within 24 hours.</p>
+
+    <div class="contact-item">
+      <div class="contact-icon">📧</div>
+      <div>
+        <div class="contact-item-label">Email</div>
+        <div class="contact-item-value"><a href="mailto:hello@luxora.com">hello@luxora.com</a></div>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="contact-icon">📱</div>
+      <div>
+        <div class="contact-item-label">WhatsApp / Phone</div>
+        <div class="contact-item-value"><a href="https://wa.me/919999999999">+91 99999 99999</a></div>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="contact-icon">⏱</div>
+      <div>
+        <div class="contact-item-label">Response Time</div>
+        <div class="contact-item-value">Within 24 hours<br>Mon – Sat, 10am – 8pm</div>
+      </div>
+    </div>
+
+    <div class="social-wrap">
+      <span class="social-label">Follow Us</span>
+      <div class="social-links">
+        <a href="#" class="social-btn" title="Instagram">📸</a>
+        <a href="#" class="social-btn" title="Twitter/X">🐦</a>
+        <a href="#" class="social-btn" title="YouTube">▶️</a>
+        <a href="#" class="social-btn" title="Pinterest">📌</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORMS -->
+  <div class="forms-wrap reveal">
+    <div class="form-tabs">
+      <button class="form-tab active" onclick="switchTab('general',this)">General Message</button>
+      <button class="form-tab" onclick="switchTab('custom',this)">Custom Order</button>
+    </div>
+
+    <!-- GENERAL CONTACT FORM -->
+    <div class="form-panel active" id="tab-general">
+      <div class="luxury-form" id="general-form">
+        <h3 class="form-title">Send a Message</h3>
+        <p class="form-subtitle">Questions, collaborations, or just saying hi — we're all ears.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input type="text" class="form-input" placeholder="Nilesh Jadhav"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" placeholder="you@email.com"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input type="text" class="form-input" placeholder="What's this about?"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell us what's on your mind..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm('general-form','general-success')"><span>Send Message →</span></button>
+      </div>
+      <div class="form-success" id="general-success">
+        <div class="success-icon">✉️</div>
+        <div class="success-title">Message Sent!</div>
+        <div class="success-text">Thank you for reaching out. We'll get back to you within 24 hours.</div>
+      </div>
+    </div>
+
+    <!-- CUSTOM ORDER FORM -->
+    <div class="form-panel" id="tab-custom">
+      <div class="luxury-form" id="custom-form">
+        <h3 class="form-title">Custom Order Request</h3>
+        <p class="form-subtitle">Tell us everything about your dream product and we'll make it real.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input type="text" class="form-input" placeholder="Full name"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone / WhatsApp</label>
+            <input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" placeholder="you@email.com"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Product Type</label>
+            <select class="form-select form-input">
+              <option value="" disabled selected>Select product</option>
+              <option>Custom Bottle</option>
+              <option>Gold Finish Flask</option>
+              <option>Matte Black Bottle</option>
+              <option>Graphic Tee</option>
+              <option>Statement Jacket</option>
+              <option>Custom Cap</option>
+              <option>Other / Multiple</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Quantity</label>
+            <select class="form-select form-input">
+              <option value="" disabled selected>How many?</option>
+              <option>1 – 5 pieces</option>
+              <option>6 – 20 pieces</option>
+              <option>21 – 50 pieces</option>
+              <option>50+ pieces (bulk)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Budget Range</label>
+          <select class="form-select form-input">
+            <option value="" disabled selected>Select budget</option>
+            <option>Under ₹1,000</option>
+            <option>₹1,000 – ₹5,000</option>
+            <option>₹5,000 – ₹20,000</option>
+            <option>₹20,000+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Describe Your Design / Vision</label>
+          <textarea class="form-textarea" style="min-height:140px;" placeholder="Describe colors, logo, text, style, occasion — anything helps!"></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm('custom-form','custom-success')"><span>Submit Custom Order →</span></button>
+      </div>
+      <div class="form-success" id="custom-success">
+        <div class="success-icon">🎨</div>
+        <div class="success-title">Order Received!</div>
+        <div class="success-text">Your custom order request is in! Our team will review your details and contact you within 24 hours with a quote.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-strip reveal">
+  <h3 class="faq-title">Frequently Asked <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold)">Questions</em></h3>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      How long does a custom order take? <span class="faq-arrow">+</span>
+    </button>
+    <div class="faq-a">Most orders are completed within 5–10 business days depending on complexity and quantity. Bulk orders may take 2–3 weeks. We'll give you an exact timeline when you order.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      Can I send my own logo or design? <span class="faq-arrow">+</span>
+    </button>
+    <div class="faq-a">Absolutely! You can send your logo, artwork, or idea via WhatsApp or email after placing your order. We accept PNG, JPG, PDF, and AI files.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      Do you offer bulk discounts? <span class="faq-arrow">+</span>
+    </button>
+    <div class="faq-a">Yes! Orders of 10+ pieces get special pricing. For bulk orders (50+), contact us directly for the best rates. Great for events, gifts, and businesses.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      What payment methods do you accept? <span class="faq-arrow">+</span>
+    </button>
+    <div class="faq-a">We accept UPI, bank transfer, and cash on delivery for local orders. Payment details are shared after order confirmation.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">LUXORA</div>
+  <div class="footer-links-row">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <span class="footer-copy">© 2026 LUXORA</span>
+</footer>
+
+<script>
+  // Cursor
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function animCursor(){cursor.style.left=mx+'px';cursor.style.top=my+'px';rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animCursor);})();
+
+  // Tab switch
+  function switchTab(tab, btn){
+    document.querySelectorAll('.form-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.form-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+tab).classList.add('active');
+  }
+
+  // Submit
+  function submitForm(formId, successId){
+    document.getElementById(formId).style.display='none';
+    document.getElementById(successId).style.display='block';
+  }
+
+  // FAQ
+  function toggleFaq(btn){
+    const item=btn.parentElement;
+    const isOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  }
+
+  // Reveal
+  const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
+</body>
+</html>
