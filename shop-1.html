@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXORA | Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-dim: #7a6030;
+      --black: #050505;
+      --dark: #0d0d0d;
+      --dark2: #141414;
+      --white: #f5f0e8;
+      --gray: #888880;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--black); color:var(--white); font-family:'Montserrat',sans-serif; font-weight:300; overflow-x:hidden; cursor:none; }
+
+    .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+    .cursor-ring { position:fixed; width:36px; height:36px; border:1px solid var(--gold); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.15s ease; opacity:0.6; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:1000; opacity:0.35; }
+
+    nav { position:fixed; top:0; left:0; right:0; z-index:500; display:flex; justify-content:space-between; align-items:center; padding:28px 60px; background:linear-gradient(to bottom,rgba(5,5,5,0.95),transparent); }
+    .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.25em; color:var(--gold); text-decoration:none; }
+    .nav-links { display:flex; gap:48px; list-style:none; }
+    .nav-links a { font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--white); text-decoration:none; opacity:0.7; transition:opacity 0.3s,color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { opacity:1; color:var(--gold); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+    .page-hero { padding:160px 60px 80px; background:linear-gradient(160deg,#0d0a04 0%,var(--black) 60%); position:relative; overflow:hidden; }
+    .page-hero::before { content:'SHOP'; position:absolute; right:-20px; top:50%; transform:translateY(-50%); font-family:'Bebas Neue',sans-serif; font-size:20rem; color:rgba(201,168,76,0.03); line-height:1; pointer-events:none; }
+    .page-hero-label { font-size:0.6rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; opacity:0; animation:fadeUp 0.8s ease forwards 0.2s; }
+    .page-hero-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(4rem,12vw,9rem); letter-spacing:0.05em; line-height:0.9; opacity:0; animation:fadeUp 0.8s ease forwards 0.4s; }
+    .page-hero-title em { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gold); }
+    .page-hero-sub { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gray); font-size:1.1rem; margin-top:20px; opacity:0; animation:fadeUp 0.8s ease forwards 0.6s; }
+
+    .marquee-wrap { background:var(--dark2); padding:12px 0; overflow:hidden; white-space:nowrap; border-top:1px solid rgba(201,168,76,0.1); border-bottom:1px solid rgba(201,168,76,0.1); }
+    .marquee-track { display:inline-flex; animation:marquee 18s linear infinite; }
+    .marquee-track span { font-family:'Bebas Neue',sans-serif; font-size:0.85rem; letter-spacing:0.3em; color:var(--gold-dim); padding:0 32px; }
+    .marquee-track span.dot { padding:0; color:var(--gold); }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    .filter-wrap { padding:48px 60px 0; display:flex; gap:4px; flex-wrap:wrap; }
+    .filter-btn { font-family:'Montserrat',sans-serif; font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase; padding:12px 28px; border:1px solid rgba(201,168,76,0.2); background:transparent; color:var(--gray); cursor:pointer; transition:all 0.3s; }
+    .filter-btn:hover { border-color:var(--gold); color:var(--white); }
+    .filter-btn.active { background:var(--gold); color:var(--black); border-color:var(--gold); }
+
+    .shop-section { padding:80px 60px; }
+    .shop-section-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; }
+    .section-label { font-size:0.6rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:block; }
+    .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3.2rem); font-weight:300; }
+    .section-count { font-size:0.65rem; letter-spacing:0.2em; color:var(--gold-dim); }
+    .section-divider { margin:0 60px; height:1px; background:linear-gradient(to right,transparent,rgba(201,168,76,0.15),transparent); }
+
+    .product-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .product-card { background:var(--dark2); position:relative; overflow:hidden; cursor:none; }
+    .product-img { aspect-ratio:3/4; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+    .product-img-bg { position:absolute; inset:0; transition:transform 0.6s ease; }
+    .product-card:hover .product-img-bg { transform:scale(1.06); }
+    .product-emoji { font-size:6rem; position:relative; z-index:1; opacity:0.2; transition:opacity 0.4s,transform 0.5s; }
+    .product-card:hover .product-emoji { opacity:0.35; transform:scale(1.08) translateY(-8px); }
+
+    .bg-t1{background:radial-gradient(circle at 50% 50%,rgba(201,168,76,0.15) 0%,transparent 65%),linear-gradient(160deg,#1a1008,#080808);}
+    .bg-t2{background:radial-gradient(circle at 40% 60%,rgba(201,168,76,0.1) 0%,transparent 60%),linear-gradient(200deg,#141008,#0d0d0d);}
+    .bg-t3{background:radial-gradient(circle at 60% 40%,rgba(201,168,76,0.12) 0%,transparent 65%),linear-gradient(140deg,#0f0f0f,#1a1208);}
+    .bg-p1{background:radial-gradient(circle at 50% 55%,rgba(201,168,76,0.13) 0%,transparent 70%),linear-gradient(180deg,#141414,#090909);}
+    .bg-p2{background:radial-gradient(circle at 35% 50%,rgba(201,168,76,0.1) 0%,transparent 60%),linear-gradient(160deg,#0d0d0d,#1c1405);}
+    .bg-p3{background:radial-gradient(circle at 65% 45%,rgba(201,168,76,0.11) 0%,transparent 65%),linear-gradient(200deg,#141414,#0a0a0a);}
+    .bg-j1{background:radial-gradient(circle at 50% 50%,rgba(201,168,76,0.18) 0%,transparent 70%),linear-gradient(160deg,#1c1405,#080808);}
+    .bg-j2{background:radial-gradient(circle at 45% 55%,rgba(201,168,76,0.12) 0%,transparent 65%),linear-gradient(200deg,#141008,#0d0d0d);}
+    .bg-j3{background:radial-gradient(circle at 55% 40%,rgba(201,168,76,0.14) 0%,transparent 60%),linear-gradient(140deg,#111108,#0a0a0a);}
+
+    .product-badge { position:absolute; top:16px; left:16px; font-size:0.55rem; letter-spacing:0.3em; text-transform:uppercase; padding:6px 14px; z-index:2; }
+    .badge-new{background:var(--gold);color:var(--black);}
+    .badge-hot{background:#c94c4c;color:var(--white);}
+    .badge-ltd{background:transparent;border:1px solid var(--gold);color:var(--gold);}
+    .size-tags { position:absolute; top:16px; right:16px; z-index:2; }
+    .size-tag { font-size:0.5rem; letter-spacing:0.15em; padding:4px 8px; background:rgba(5,5,5,0.8); border:1px solid rgba(201,168,76,0.2); color:var(--gold-dim); display:block; }
+
+    .product-info { padding:24px 28px 28px; border-top:1px solid rgba(255,255,255,0.04); }
+    .product-category { font-size:0.55rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:8px; }
+    .product-name { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:400; color:var(--white); margin-bottom:6px; }
+    .product-tagline { font-size:0.68rem; color:var(--gray); line-height:1.6; margin-bottom:20px; }
+    .product-footer { display:flex; justify-content:space-between; align-items:center; }
+    .price-from { font-size:0.5rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-dim); display:block; }
+    .price-value { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; color:var(--gold); letter-spacing:0.05em; line-height:1; }
+    .btn-order { font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; text-decoration:none; padding:12px 22px; background:var(--gold); color:var(--black); transition:all 0.3s; position:relative; overflow:hidden; border:none; cursor:pointer; display:inline-block; }
+    .btn-order::before { content:''; position:absolute; inset:0; background:var(--white); transform:translateX(-100%); transition:transform 0.3s; }
+    .btn-order:hover::before { transform:translateX(0); }
+    .btn-order span { position:relative; z-index:1; }
+    .product-overlay { position:absolute; inset:0; border:1px solid transparent; pointer-events:none; transition:border-color 0.4s; }
+    .product-card:hover .product-overlay { border-color:rgba(201,168,76,0.3); }
+
+    .custom-banner { margin:40px 60px 80px; background:var(--dark2); padding:60px; display:grid; grid-template-columns:1fr auto; gap:40px; align-items:center; position:relative; overflow:hidden; }
+    .custom-banner::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 80% 50%,rgba(201,168,76,0.07) 0%,transparent 60%); pointer-events:none; }
+    .custom-banner-tag { font-size:0.6rem; letter-spacing:0.45em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:block; }
+    .custom-banner-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,3vw,2.5rem); font-weight:300; margin-bottom:12px; }
+    .custom-banner-text { font-size:0.72rem; color:var(--gray); line-height:1.9; max-width:500px; }
+    .btn-outline { font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; text-decoration:none; padding:18px 40px; border:1px solid var(--gold); color:var(--gold); transition:all 0.3s; white-space:nowrap; display:inline-block; }
+    .btn-outline:hover { background:var(--gold); color:var(--black); }
+
+    .how-strip { background:var(--dark2); padding:80px 60px; }
+    .how-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:300; margin-bottom:48px; text-align:center; }
+    .how-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+    .how-step { padding:40px 32px; background:var(--dark); position:relative; text-align:center; }
+    .how-step::after { content:'→'; position:absolute; right:-12px; top:50%; transform:translateY(-50%); color:var(--gold-dim); font-size:1.2rem; z-index:1; }
+    .how-step:last-child::after { display:none; }
+    .how-num { font-family:'Bebas Neue',sans-serif; font-size:3rem; color:rgba(201,168,76,0.15); margin-bottom:12px; }
+    .how-icon { font-size:2rem; margin-bottom:12px; }
+    .how-step-title { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--white); margin-bottom:8px; }
+    .how-step-text { font-size:0.65rem; color:var(--gray); line-height:1.7; }
+
+    footer { background:var(--black); padding:60px; border-top:1px solid rgba(201,168,76,0.1); display:flex; justify-content:space-between; align-items:center; }
+    .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.2em; color:var(--gold); }
+    .footer-links-row { display:flex; gap:40px; }
+    .footer-links-row a { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gray); text-decoration:none; transition:color 0.3s; }
+    .footer-links-row a:hover { color:var(--gold); }
+    .footer-copy { font-size:0.6rem; color:rgba(136,136,128,0.4); }
+
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media(max-width:768px){
+      nav{padding:20px 24px;} .nav-links{gap:20px;}
+      .page-hero{padding:120px 24px 60px;}
+      .filter-wrap{padding:32px 24px 0;}
+      .shop-section{padding:60px 24px;}
+      .product-grid{grid-template-columns:1fr 1fr;}
+      .section-divider{margin:0 24px;}
+      .custom-banner{margin:0 24px 60px;grid-template-columns:1fr;padding:36px 24px;}
+      .how-strip{padding:60px 24px;}
+      .how-steps{grid-template-columns:1fr 1fr;}
+      .how-step::after{display:none;}
+      footer{flex-direction:column;gap:20px;padding:40px 24px;text-align:center;}
+      .footer-links-row{flex-wrap:wrap;justify-content:center;gap:20px;}
+    }
+    @media(max-width:480px){ .product-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LUXORA</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html" class="active">Shop</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <span class="page-hero-label">The Collection</span>
+  <h1 class="page-hero-title">OUR<br><em>Clothing</em></h1>
+  <p class="page-hero-sub">Premium streetwear — designed by you, crafted for you.</p>
+</div>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>T-SHIRTS</span><span class="dot">✦</span><span>PANTS</span><span class="dot">✦</span><span>JACKETS</span><span class="dot">✦</span><span>CUSTOM DESIGN</span><span class="dot">✦</span><span>YOUR STYLE</span><span class="dot">✦</span><span>PREMIUM QUALITY</span><span class="dot">✦</span>
+    <span>T-SHIRTS</span><span class="dot">✦</span><span>PANTS</span><span class="dot">✦</span><span>JACKETS</span><span class="dot">✦</span><span>CUSTOM DESIGN</span><span class="dot">✦</span><span>YOUR STYLE</span><span class="dot">✦</span><span>PREMIUM QUALITY</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<div class="filter-wrap reveal">
+  <button class="filter-btn active" onclick="filterProducts('all',this)">All</button>
+  <button class="filter-btn" onclick="filterProducts('tshirts',this)">T-Shirts</button>
+  <button class="filter-btn" onclick="filterProducts('pants',this)">Pants</button>
+  <button class="filter-btn" onclick="filterProducts('jackets',this)">Jackets</button>
+</div>
+
+<!-- T-SHIRTS -->
+<section class="shop-section" id="sec-tshirts">
+  <div class="shop-section-header reveal">
+    <div><span class="section-label">Tops</span><h2 class="section-title">T-Shirts</h2></div>
+    <span class="section-count">3 Styles</span>
+  </div>
+  <div class="product-grid reveal">
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-t1"></div><div class="product-emoji">👕</div></div>
+      <span class="product-badge badge-hot">Popular</span>
+      <div class="size-tags"><span class="size-tag">XS – 3XL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Streetwear · T-Shirt</div>
+        <div class="product-name">Classic Graphic Tee</div>
+        <div class="product-tagline">100% premium cotton. Your design printed exactly how you want it.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹499</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-t2"></div><div class="product-emoji">🖤</div></div>
+      <span class="product-badge badge-new">New</span>
+      <div class="size-tags"><span class="size-tag">XS – 3XL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Luxury · T-Shirt</div>
+        <div class="product-name">Oversized Drop Tee</div>
+        <div class="product-tagline">Oversized fit with heavyweight fabric. Bold prints, luxury feel.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹649</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-t3"></div><div class="product-emoji">✨</div></div>
+      <span class="product-badge badge-ltd">Limited</span>
+      <div class="size-tags"><span class="size-tag">S – 2XL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Premium · T-Shirt</div>
+        <div class="product-name">Embroidered Logo Tee</div>
+        <div class="product-tagline">Your logo embroidered on chest. Luxury finish, premium cotton blend.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹799</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider" id="div1"></div>
+
+<!-- PANTS -->
+<section class="shop-section" id="sec-pants">
+  <div class="shop-section-header reveal">
+    <div><span class="section-label">Bottoms</span><h2 class="section-title">Pants</h2></div>
+    <span class="section-count">3 Styles</span>
+  </div>
+  <div class="product-grid reveal">
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-p1"></div><div class="product-emoji">👖</div></div>
+      <span class="product-badge badge-hot">Popular</span>
+      <div class="size-tags"><span class="size-tag">XS – 3XL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Streetwear · Pants</div>
+        <div class="product-name">Custom Track Pants</div>
+        <div class="product-tagline">Comfortable track pants with custom side stripe and logo printing.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹699</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-p2"></div><div class="product-emoji">🖤</div></div>
+      <span class="product-badge badge-new">New</span>
+      <div class="size-tags"><span class="size-tag">S – 2XL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Luxury · Pants</div>
+        <div class="product-name">Cargo Street Pants</div>
+        <div class="product-tagline">Premium cargo pants with custom embroidery. Streetwear meets luxury.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹999</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-p3"></div><div class="product-emoji">💎</div></div>
+      <span class="product-badge badge-ltd">Limited</span>
+      <div class="size-tags"><span class="size-tag">S – XXL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Premium · Pants</div>
+        <div class="product-name">Jogger Elite</div>
+        <div class="product-tagline">Premium joggers with full custom print. Your design, head to toe.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹849</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider" id="div2"></div>
+
+<!-- JACKETS -->
+<section class="shop-section" id="sec-jackets">
+  <div class="shop-section-header reveal">
+    <div><span class="section-label">Outerwear</span><h2 class="section-title">Jackets</h2></div>
+    <span class="section-count">3 Styles</span>
+  </div>
+  <div class="product-grid reveal">
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-j1"></div><div class="product-emoji">🧥</div></div>
+      <span class="product-badge badge-hot">Popular</span>
+      <div class="size-tags"><span class="size-tag">XS – 3XL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Streetwear · Jacket</div>
+        <div class="product-name">Bomber Jacket</div>
+        <div class="product-tagline">Classic bomber with custom embroidery on chest and back. Pure statement.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹1,999</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-j2"></div><div class="product-emoji">⚡</div></div>
+      <span class="product-badge badge-new">New</span>
+      <div class="size-tags"><span class="size-tag">S – 2XL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Luxury · Jacket</div>
+        <div class="product-name">Varsity Jacket</div>
+        <div class="product-tagline">Premium varsity jacket with your name, number & logo. Iconic look.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹2,499</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"><div class="product-img-bg bg-j3"></div><div class="product-emoji">👑</div></div>
+      <span class="product-badge badge-ltd">Limited</span>
+      <div class="size-tags"><span class="size-tag">S – XXL</span></div>
+      <div class="product-overlay"></div>
+      <div class="product-info">
+        <div class="product-category">Premium · Jacket</div>
+        <div class="product-name">Windbreaker Elite</div>
+        <div class="product-tagline">Lightweight windbreaker with full sublimation print. All-over custom design.</div>
+        <div class="product-footer">
+          <div><span class="price-from">Starting from</span><span class="price-value">₹1,799</span></div>
+          <a href="contact.html" class="btn-order"><span>Order Now</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="custom-banner reveal">
+  <div>
+    <span class="custom-banner-tag">Got a unique idea?</span>
+    <h3 class="custom-banner-title">We Build Exactly What You Imagine</h3>
+    <p class="custom-banner-text">Any color. Any design. Any quantity. Send us your idea on WhatsApp and we'll make it happen — from 1 piece to bulk orders.</p>
+  </div>
+  <a href="contact.html" class="btn-outline">Get Custom Quote →</a>
+</div>
+
+<div class="how-strip reveal">
+  <h3 class="how-title">How It <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold)">Works</em></h3>
+  <div class="how-steps">
+    <div class="how-step"><div class="how-num">01</div><div class="how-icon">🛍️</div><div class="how-step-title">Choose Product</div><div class="how-step-text">Pick your T-shirt, Pants or Jacket style and size.</div></div>
+    <div class="how-step"><div class="how-num">02</div><div class="how-icon">🎨</div><div class="how-step-title">Share Design</div><div class="how-step-text">Send your logo, colors & style idea via WhatsApp or form.</div></div>
+    <div class="how-step"><div class="how-num">03</div><div class="how-icon">✂️</div><div class="how-step-title">We Craft It</div><div class="how-step-text">Your custom piece is made with premium quality materials.</div></div>
+    <div class="how-step"><div class="how-num">04</div><div class="how-icon">📦</div><div class="how-step-title">Delivered</div><div class="how-step-text">Your LUXORA piece arrives at your doorstep. Wear it proud.</div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">LUXORA</div>
+  <div class="footer-links-row">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <span class="footer-copy">© 2026 LUXORA</span>
+</footer>
+
+<script>
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function anim(){cursor.style.left=mx+'px';cursor.style.top=my+'px';rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.transform='translate(-50%,-50%) scale(1.8)';ring.style.opacity='1';});
+    el.addEventListener('mouseleave',()=>{ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='0.6';});
+  });
+
+  function filterProducts(cat,btn){
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const ids=['sec-tshirts','sec-pants','sec-jackets'];
+    const cats=['tshirts','pants','jackets'];
+    ids.forEach((id,i)=>{document.getElementById(id).style.display=(cat==='all'||cat===cats[i])?'block':'none';});
+    ['div1','div2'].forEach(d=>{document.getElementById(d).style.display=cat==='all'?'block':'none';});
+  }
+
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
+</body>
+</html>
